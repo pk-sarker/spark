@@ -3,6 +3,7 @@
 ## Table of Contents
 - [Overview](#overview)
 - [Features](#features)
+- [Spark Eco-System](#spark-eco-system)
 - [Architecture Overview](#architecture-overview)
 - [Install Spark in local machine](#install-spark-in-local-machine)
 - [Reference](#reference)
@@ -46,6 +47,23 @@ Combine SQL, streaming, and complex analytics. Spark powers a stack of libraries
 Spark runs on Hadoop, Apache Mesos, Kubernetes, standalone, or in the cloud. It can access diverse data sources.
 
 You can run Spark using its standalone cluster mode, on EC2, on Hadoop YARN, on Mesos, or on Kubernetes. Access data in HDFS, Alluxio, Apache Cassandra, Apache HBase, Apache Hive, and hundreds of other data sources.
+
+## Spark Eco-System
+The architecture of spark is depicted below: 
+![Spark Eco-System](./spark-ecosys.png)
+
+Spark is a distributed processing engine, but it does not have its own distributed storage and cluster manager for resources. It runs on top of out of the box cluster resource manager and distributed storage. 
+
+Spark core contains two major components:
+* **Core API**: The Unstructured APIs(RDDs), Structured APIs(DataFrames, Datasets). Available in Scala, Python, Java, and R
+* **Compute Engine**: Memory Management, Task Scheduling, Fault Recovery, Interacting with Cluster Manager.
+
+Spark also provides four important libraries/APIs:
+* **Spark SQL**: Spark SQL is a Spark module for structured data processing. Unlike the basic Spark RDD API, the interfaces provided by Spark SQL provide Spark with more information about the structure of both the data and the computation being performed.
+* **Streaming**: Spark Streaming is an extension of the core Spark API that Consume and Process a continuous stream of data. 
+* **MLlib**: MLlib is Spark’s machine learning (ML) library. Its goal is to make practical machine learning scalable and easy.
+* **GraphX**: GraphX is a new component in Spark for graphs and graph-parallel computation
+
 
 
 ## Reference
