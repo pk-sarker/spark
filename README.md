@@ -71,10 +71,19 @@ There are two abstraction in Spark architecture:
 * Directed Acyclic Graph (DAG)
 
 **Resilient Distributed Datasets (RDD)**\
-The Resilient Distributed Datasets are the group of data items that can be stored in-memory on worker nodes. Here,
-- Resilient: Restore the data on failure.
+RDD is a distributed collection of elements that can be stored in-memory. In Spark every work is expressed as either 
+creating a new RDD, transforming existing RDDs, calling action on RDDs to compute results.
+
+- Resilient: Fault tolerant and is capable of restoring the data on failure.
 - Distributed: Data is distributed among different nodes.
-- Dataset: Group of data.
+- Dataset: Collection of partitioned data  
+
+Spark distributes the data contained in RDD across the cluster and parallelize the operations perform on them.
+
+Each RDD is split into multiple partitions, which may be computed on different nodes of the cluster.
+
+RDD is immutable, once created can't be changed but can be transformed any time.
+
 
 
 
