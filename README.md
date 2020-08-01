@@ -64,6 +64,18 @@ Spark also provides four important libraries/APIs:
 * **MLlib**: MLlib is Spark’s machine learning (ML) library. Its goal is to make practical machine learning scalable and easy.
 * **GraphX**: GraphX is a new component in Spark for graphs and graph-parallel computation
 
+#### Architecture
+The Spark follows the master-slave architecture. Its cluster consists of a single master and multiple slaves.
+There are two abstraction in Spark architecture:
+* Resilient Distributed Dataset (RDD)
+* Directed Acyclic Graph (DAG)
+
+**Resilient Distributed Datasets (RDD)**\
+The Resilient Distributed Datasets are the group of data items that can be stored in-memory on worker nodes. Here,
+- Resilient: Restore the data on failure.
+- Distributed: Data is distributed among different nodes.
+- Dataset: Group of data.
+
 
 
 ## Reference
