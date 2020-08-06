@@ -64,7 +64,7 @@ Spark also provides four important libraries/APIs:
 * **MLlib**: MLlib is Spark’s machine learning (ML) library. Its goal is to make practical machine learning scalable and easy.
 * **GraphX**: GraphX is a new component in Spark for graphs and graph-parallel computation
 
-#### Architecture
+#### Architecture 
 The Spark follows the master-slave architecture. Its cluster consists of a single master and multiple slaves.
 There are two abstraction in Spark architecture:
 * Resilient Distributed Dataset (RDD)
@@ -83,7 +83,24 @@ Spark distributes the data contained in RDD across the cluster and parallelize t
 Each RDD is split into multiple partitions, which may be computed on different nodes of the cluster.
 
 RDD is immutable, once created can't be changed but can be transformed any time.
+After creating RDD there are two types of operations we can do:
+* ***Transformation***, For example one common transformation is filtering data that matches a predicate.
+* ***Action***, compute a result based on an RDD, and either return it to the driver program or save it to an external storage system (e.g., HDFS). One example of an action we called earlier is *first()*, which returns the first element in an RDD
 
+**Directed Acyclic Graph (DAG)**\
+Directed Acyclic Graph, DAG is a finite direct graph that performs a sequence of computations on data. 
+Each node is an RDD partition, and the edge is a transformation on top of data. Here, the graph refers the navigation 
+whereas directed and acyclic refers to how it is done.
+
+The DAG in Spark supports cyclic data flow. Every Spark job creates a DAG of task stages that will be executed on the cluster. Spark DAGs can contain many stages, 
+unlike the Hadoop MapReduce which has only two predefined stages. In a Spark DAG, there are consecutive computation stages that optimize the execution plan. Spark DAG uses the Scala interpreter 
+to interpret codes with the same modifications. When this code is entered in a Spark console, an operator graph is created. The DAG then divides the operators into stages in the DAG scheduler. 
+The stages are passed to the Task scheduler, which is then launched through the Cluster manager.
+
+RDD splits data into a partition, and every node operates on a partition. The composition of these operations together and the Spark execution engine views this as DAG.
+When a node crashes in the middle of an operation, the cluster manages to find out the dead node and assigns another node to the process. This will prevent any data loss.
+
+![Spark Eco-System](./spark-arch.png)
 
 
 
