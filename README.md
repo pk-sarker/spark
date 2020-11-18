@@ -85,7 +85,8 @@ Each RDD is split into multiple partitions, which may be computed on different n
 RDD is immutable, once created can't be changed but can be transformed any time.
 After creating RDD there are two types of operations we can do:
 * ***Transformation***, For example one common transformation is filtering data that matches a predicate.
-* ***Action***, compute a result based on an RDD, and either return it to the driver program or save it to an external storage system (e.g., HDFS). One example of an action we called earlier is *first()*, which returns the first element in an RDD
+* ***Action***, compute a result based on an RDD, and either return it to the driver program or save it to an external storage system (e.g., HDFS). One example of an action we called earlier is *first()*, which returns the first element in an RDD.
+
 
 **Directed Acyclic Graph (DAG)**\
 Directed Acyclic Graph, DAG is a finite direct graph that performs a sequence of computations on data. 
@@ -100,9 +101,52 @@ The stages are passed to the Task scheduler, which is then launched through the 
 RDD splits data into a partition, and every node operates on a partition. The composition of these operations together and the Spark execution engine views this as DAG.
 When a node crashes in the middle of an operation, the cluster manages to find out the dead node and assigns another node to the process. This will prevent any data loss.
 
+Transformations in RDD is lazily evaluated. That means when we call a transformation on a RDD, the operation doesn't perform immediately. Instead, Spark internally records metadata to indicate that this operation
+has been requested. Loading data in RDD is lazily evaluated. 
 ![Spark Eco-System](./spark-arch.png)
 
 
+## Install
+### Mac
+There are two ways you can install Spark, using Homebrew or download the Spark distribution
+**Install using Homebrew**
+1. [Install Homebrew](https://brew.sh/)
+2. Install xcode
+3. Install Java
+    - Homebrew: `brew cask install java`
+    - Download [JDK](https://www.oracle.com/java/technologies/javase-jdk11-downloads.html) and install.
+4. Install [Scala](https://www.scala-lang.org/download/), 
+    - Homebrew: `brew install scala`
+    - Download [Scala](https://www.scala-lang.org/download/) binary, extract and add scala bin in the path: `PATH="/scala-2.13.3/bin:$PATH"`
+5. Install Spark
+    - Homebrew: `brew install apache-spark`
+    - Download binary distribution of [Spark](https://spark.apache.org/downloads.html). Extract the content and add in environment variable. \
+        `export PATH=/spark-3.0.1-bin-hadoop3.2/bin:$PATH`\
+        `export SPARK_HOME='/spark-3.0.1-bin-hadoop3.2'`
+ 
+Test Spark installation by running spark-shell:
+`/spark-3.0.1-bin-hadoop3.2/bin/spark-shell`
+You will see logs like below:
+```
+Using Spark's default log4j profile: org/apache/spark/log4j-defaults.properties
+Setting default log level to "WARN".
+To adjust logging level use sc.setLogLevel(newLevel). For SparkR, use setLogLevel(newLevel).
+Spark context Web UI available at http://192.168.0.11:4040
+Spark context available as 'sc' (master = local[*], app id = local-1605674528116).
+Spark session available as 'spark'.
+Welcome to
+      ____              __
+     / __/__  ___ _____/ /__
+    _\ \/ _ \/ _ `/ __/  '_/
+   /___/ .__/\_,_/_/ /_/\_\   version 3.0.1
+      /_/
+         
+Using Scala version 2.12.10 (Java HotSpot(TM) 64-Bit Server VM, Java 1.8.0_221)
+Type in expressions to have them evaluated.
+Type :help for more information.
+
+scala> 
+```
 
 ## Reference
 [1] [Apache Spark Documentation](https://spark.apache.org/docs/latest/)\
