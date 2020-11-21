@@ -1,12 +1,24 @@
 # Spark
 
 ## Table of Contents
-- [Overview](#overview)
-- [Features](#features)
-- [Spark Eco-System](#spark-eco-system)
-- [Architecture Overview](#architecture-overview)
-- [Install Spark in local machine](#install-spark-in-local-machine)
-- [Reference](#reference)
+- [Spark](#spark)
+  - [Table of Contents](#table-of-contents)
+  - [Overview](#overview)
+  - [Features](#features)
+    - [Lighting-fast processing speed](#lighting-fast-processing-speed)
+    - [Ease of use](#ease-of-use)
+    - [In-memory computing](#in-memory-computing)
+    - [Real-time stream processing](#real-time-stream-processing)
+    - [Generality](#generality)
+    - [Runs Everywhere](#runs-everywhere)
+  - [Spark Eco-System](#spark-eco-system)
+      - [Architecture](#architecture)
+  - [Install](#install)
+    - [Mac](#mac)
+  - [Spark Project setup](#spark-project-setup)
+    - [IntelliJ IDEA](#intellij-idea)
+    - [Run first program](#run-first-program)
+  - [Reference](#reference)
 
 
 ## Overview
@@ -50,7 +62,7 @@ You can run Spark using its standalone cluster mode, on EC2, on Hadoop YARN, on 
 
 ## Spark Eco-System
 The architecture of spark is depicted below: 
-![Spark Eco-System](./spark-ecosys.png)
+![Spark Eco-System](./docs/images/spark-ecosys.png)
 
 Spark is a distributed processing engine, but it does not have its own distributed storage and cluster manager for resources. It runs on top of out of the box cluster resource manager and distributed storage. 
 
@@ -103,7 +115,7 @@ When a node crashes in the middle of an operation, the cluster manages to find o
 
 Transformations in RDD is lazily evaluated. That means when we call a transformation on a RDD, the operation doesn't perform immediately. Instead, Spark internally records metadata to indicate that this operation
 has been requested. Loading data in RDD is lazily evaluated. 
-![Spark Eco-System](./spark-arch.png)
+![Spark Eco-System](./docs/images/spark-arch.png)
 
 
 ## Install
@@ -148,6 +160,72 @@ Type :help for more information.
 scala> 
 ```
 
+## Spark Project setup
+### IntelliJ IDEA
+First create a new scala project, select sbt as build tool for the project. 
+![Create project](./docs/images/create-project.png)
+Select scala, sbt and java versions
+![Scala SBT Java](./docs/images/scala-sbt-java.png)
+
+It will create a project structure like bellow
+![Scala SBT Java](./docs/images/project-structure.png)
+
+Now add project dependencies, which are spark modules
+![Dependency](./docs/images/dependency.png)
+
+If auto-load is enabled then dependencies will automaticaly download, otherwise you will  see a refreash icon on the right side when you change something in the **build.sbt** file. 
+
+![Load Dependency](./docs/images/load-dependency-1.png)
+![Load Dependency](./docs/images/load-dependency-2.png)
+
+There is another way too load the dependencies from command line.
+Go to the root of the project and run 
+```
+$ sbt update
+```
+
+### Run first program
+First try to run a simple scala program
+```scala
+package com.pks.spark
+
+object Hello extends App {
+  println("Hello scala!")
+}
+
+$ Hello scala!
+```
+
+Now lets write a simple spark program that will count number of lines in a file.
+
+```scala
+package com.pks.spark
+
+import org.apache.log4j.{Level, Logger}
+import org.apache.spark.SparkContext
+
+object HelloSpark {
+  def main(args: Array[String]): Unit = {
+
+    Logger.getLogger("org").setLevel(Level.ERROR)
+
+    val sc = new SparkContext("local[*]", "HelloWorld")
+
+    val lines = sc.textFile("data/paragraph.txt")
+
+    val numLines = lines.count()
+
+    println("The file has " + numLines + " lines.")
+
+    sc.stop()
+  }
+}
+
+$  The file has 214 lines.
+```
+
+
+https://grouplens.org/datasets/movielens/
 ## Reference
 [1] [Apache Spark Documentation](https://spark.apache.org/docs/latest/)\
 [2] [Learning Spark  Lightning-Fast Big Data Analysis by O'Reilly Media, Inc](https://www.oreilly.com/library/view/learning-spark/9781449359034/)
