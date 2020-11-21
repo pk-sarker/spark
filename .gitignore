@@ -1,5 +1,9 @@
 .idea/
 example/.idea/
+example/target/
+example/.bsp/
+example/project/
+practice/
 .DS_Store
 .vscode
 metals
