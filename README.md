@@ -209,15 +209,21 @@ object HelloSpark {
 
     Logger.getLogger("org").setLevel(Level.ERROR)
 
-    val sc = new SparkContext("local[*]", "HelloWorld")
+    // create a SparkContext object, which tells Spark how to access a cluster.
+    // We can create a SparkConf object and then create SparkContext object by 
+    // passing SparkConf object
+    val sparkConf = new SparkConf().setAppName("HelloSpark").setMaster("local[*]")
+    val sparkContext = new  SparkContext(sparkConf)
+    
+    // val sparkContext = new SparkContext("local[*]", "HelloSpark")
 
-    val lines = sc.textFile("data/paragraph.txt")
+    val lines = sparkContext.textFile("data/paragraph.txt")
 
     val numLines = lines.count()
 
     println("The file has " + numLines + " lines.")
 
-    sc.stop()
+    sparkContext.stop()
   }
 }
 
