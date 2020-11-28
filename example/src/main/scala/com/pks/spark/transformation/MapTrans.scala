@@ -12,6 +12,16 @@ object MapTrans {
     incRdd.collect().foreach( i => {
       print(i + " ")
     })
+    val squareRdd = incRdd.map(square)
+    squareRdd.collect().foreach( i => {
+      print(i + " ")
+    })
+    //squareRdd.reduce()
+
     // incRdd.collect().foreach(println)
+  }
+
+  def square(num: Int): Int = {
+    return num * num
   }
 }
