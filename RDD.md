@@ -94,6 +94,38 @@ object FlatmapTrans {
 ```
 
 #### Filter
+Filter return a new RDD containing only the elements that satisfy a predicate.
+```scala
+def filter(f: T => Boolean): RDD[T]
+```
+Lets have a example to filter odd and even number from a RDD
+```scala
+import org.apache.spark.SparkContext
+
+object FilterTrans {
+  def main(args: Array[String]): Unit = {
+    val sparkContext = new SparkContext("local[*]", "FilterTrans")
+    val rdd = sparkContext.parallelize(List(1,2,3,4,5,6,7,8,9))
+    val even_rdd = rdd.filter(element => element%2 == 0)
+    val odd_rdd = rdd.filter(element => element%2 == 1)
+    println("Even numbers: ")
+    even_rdd.collect().foreach(a => {
+      print(a + " ")
+    })
+
+    println("\nOdd numbers: ")
+    odd_rdd.collect().foreach(a => {
+      print(a + " ")
+    })
+    sparkContext.stop()
+  }
+}
+
+Even numbers: 
+2 4 6 8
+Odd numbers: 
+1 3 5 7 9
+```
 
 #### distinct
 
