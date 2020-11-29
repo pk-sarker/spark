@@ -62,6 +62,8 @@ Output:
 8
 ```
 
+Another important thing is that `map()`'s return type doesn't have to be the same as its input type. Consider like there is a RDD that contains *String*, and  the  `map()` function parses the String and returns a *Double*.
+
 **Parallelize**: Parallelize method in `SparkContext` creates a parallelized collection which allowes Spark to distribute the data across multiple nodes, instead of depending on a single node to process the data.
 
 ```scala
@@ -94,7 +96,7 @@ object FlatmapTrans {
 ```
 
 #### Filter
-Filter return a new RDD containing only the elements that satisfy a predicate.
+Filter return a new RDD containing only the elements that satisfy a predicate. The `filter()` transformation takes in a function and returns an RDD that only has elements that pass the `filter()` function.
 ```scala
 def filter(f: T => Boolean): RDD[T]
 ```
@@ -128,12 +130,79 @@ Odd numbers:
 ```
 
 #### distinct
+Removes duplicate elements from RDD and returns a new RDD with unique elements.
 
+```scala
+import org.apache.spark.SparkContext
+
+object DistinctTrans {
+  def main(args: Array[String]): Unit = {
+    val sparkContext = new SparkContext("local[*]", "DistinctTrans")
+    val rdd = sparkContext.parallelize(List(1,3,6,9,2,3,6,7,1))
+
+    rdd.collect().foreach(num => {
+      print(num + " ")
+    })
+
+    val distinctRdd = rdd.distinct()
+    distinctRdd.collect().foreach(num => {
+      print(num + " ")
+    })
+    sparkContext.stop()
+  }
+}
+
+1 3 6 9 2 3 6 7 1
+1 2 3 6 7 9
+
+```
 #### sample
 
 #### union
+With union transformation it combines two RDDs and returns a new RDD. Union will keep the duplicated elements which consists in  both RDDs. 
 
-#### intersection
+```scala
+import org.apache.spark.SparkContext
+
+object UnionTrans {
+  def  main(args: Array[String]): Unit = {
+    val sparkContext = new SparkContext("local[*]", "UnionTrans")
+    val rdd_fruit1 = sparkContext.parallelize(List("Apple", "Orange", "Grape"))
+    val rdd_fruit2 = sparkContext.parallelize(List("Cherry", "Blueberries", "Pear", "Strawberry", "Orange"))
+
+    val rdd_fruit = rdd_fruit1.union(rdd_fruit2)
+
+    rdd_fruit.collect().foreach(f => {
+      print(f + " ")
+    })
+  }
+}
+
+Apple Orange Grape Cherry Blueberries Pear Strawberry Orange
+```
+
+#### Intersection
+With `intersection()` transformation, it creates a new RDD by using the common elements in two RDDs and also removes duplicate element. *Union* and *Intersection* is similar concept but the performance of *Intersection* is worse than *Union* as it has to shuffle the elements over network.
+
+```Scala
+import org.apache.spark.SparkContext
+
+object IntersectionTrans {
+  def main(args: Array[String]) : Unit = {
+    val sparkContext = new SparkContext("local[*]", "IntersectionTrans")
+    val rdd1 = sparkContext.parallelize(List(30,70,90,10))
+    val rdd2 = sparkContext.parallelize(List(40,20,80,30,10))
+
+    val rdd3 = rdd1.intersection(rdd2)
+    rdd3.collect().foreach(element => {
+      print(element + " ")
+    })
+
+    sparkContext.stop()
+  }
+}
+```
+
 
 #### subtract
 #### cartesian
